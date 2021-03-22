@@ -2,12 +2,11 @@ package ru.geekbrains.homework_2.Lesson_2;
 
 public class Exceptions {
 
-    public static void main(String[] args) throws MyArrayDataException {
-        int result = 0;
+    public static void main(String[] args) throws MyArrayDataException, MyArraySizeException {
 
         String[][] array = {
                 {"1", "2", "3", "5"},
-                {"1", "2", "3", "4"},
+                {"1", "2", "5", "4"},
                 {"1", "2", "3", "4"},
                 {"1", "2", "3", "4"},
 
@@ -19,18 +18,21 @@ public class Exceptions {
     }
 
 
-    public static void check(String[][] array) throws MyArrayDataException {
+    public static void check(String[][] array) throws MyArrayDataException, MyArraySizeException {
         int total = 0;
 
-        if (array[0].length != 4 || array[1].length != 4 || array[2].length != 4 || array[3].length != 4) {
-            throw new MyArraySizeException();
+        for (int i=0; i<4; i++) {
+            if (array[i].length != 4){
+                throw new MyArraySizeException();
+            }
         }
+
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4 ; j++) {
                 try {
                     total += Integer.parseInt(array[i][j]);
-                }catch (IllegalArgumentException e){
-                    throw new MyArrayDataException("in a raw " + (i+1) + " column "  + (j+1));
+                }catch (NumberFormatException e){
+                    throw new MyArrayDataException(i,j);
                 }
             }
 
